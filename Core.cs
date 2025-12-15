@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace HoneycombEngine
 {
@@ -8,10 +9,14 @@ namespace HoneycombEngine
     {
         public static GraphicsDeviceManager _graphics;
         public static SpriteBatch _spriteBatch;
+        public static HoneycombCore Self;
 
         public HoneycombCore()
         {
+            Self = this;
             _graphics = new GraphicsDeviceManager(this);
+            IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 60.0);
         }
 
         protected override void Initialize()

@@ -15,7 +15,7 @@ namespace HoneycombEngine
         {
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
-            foreach (var i in Objects.generic)
+            foreach (var i in Objects.generic2D.ToArray())
             {
                 i.InternalUpdate();
             }
@@ -24,7 +24,7 @@ namespace HoneycombEngine
         public static void Draw()
         {
             HoneycombCore._spriteBatch.Begin();
-            foreach (var i in Objects.generic)
+            foreach (var i in Objects.generic2D.ToArray())
             {
                 i.InternalDraw();
             }

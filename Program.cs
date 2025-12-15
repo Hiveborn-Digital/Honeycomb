@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyGame
+namespace HoneycombInit
 {
     public static class Program
     {
