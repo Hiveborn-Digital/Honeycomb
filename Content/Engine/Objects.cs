@@ -9,20 +9,17 @@ namespace HoneycombEngine
 {
     public partial class Honeycomb
     {
-        public class Objects
-        {
-            public static List<Generic2D> generic2D = new();
-            public static List<Generic3D> generic3D = new();
-        }
-
         public class Generic2D
         {
             public Vector2 Position;
             public Vector2 Speed;
             public int Depth;
-            public Generic2D()
+            public Generic2D(string sceneID)
             {
-                Objects.generic2D.Add(this);
+                if (Scenes[sceneID] is Scene2D s2d)
+                {
+                    s2d.objects.generic2D.Add(this);
+                }
             }
             internal void InternalUpdate()
             {
@@ -40,9 +37,12 @@ namespace HoneycombEngine
         {
             public Vector3 Position;
             public Vector3 Speed;
-            public Generic3D()
+            public Generic3D(string sceneID)
             {
-                Objects.generic3D.Add(this);
+                if (Scenes[sceneID] is Scene3D s3d)
+                {
+                    s3d.objects.generic3D.Add(this);
+                }
             }
             internal void InternalUpdate()
             {
