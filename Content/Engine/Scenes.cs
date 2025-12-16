@@ -71,7 +71,7 @@ namespace HoneycombEngine
 
         public class Scene
         {
-            public map = null;
+            public Map map = null;
             public string sceneID;
             public Scene(string ID)
             {
