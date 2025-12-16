@@ -16,7 +16,7 @@ namespace HoneycombEngine
         {
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
-            foreach (var scene in Scenes.Values)
+            foreach (var scene in LoadedScenes)
             {
                 if (scene is Scene2D s2d)
                 {
@@ -32,7 +32,7 @@ namespace HoneycombEngine
         public static void Draw()
         {
             HoneycombCore._spriteBatch.Begin();
-            foreach (var scene in Scenes.Values)
+            foreach (var scene in LoadedScenes)
             {
                 if (scene is Scene2D s2d)
                 {
