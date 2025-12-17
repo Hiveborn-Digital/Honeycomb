@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.IO;
 
 namespace HoneycombEngine
 {
@@ -17,6 +18,11 @@ namespace HoneycombEngine
             _graphics = new GraphicsDeviceManager(this);
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 60.0);
+
+            var logStream = new FileStream("log.txt", FileMode.Append, FileAccess.Write);
+            var logWriter = new StreamWriter(logStream) { AutoFlush = true };
+            Console.SetOut(logWriter);
+            Console.SetError(logWriter);
         }
 
         protected override void Initialize()
@@ -45,7 +51,7 @@ namespace HoneycombEngine
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            Honeycomb.GraphicsContext.Device.Clear(Honeycomb.clearColour);
 
             Honeycomb.Draw();
 

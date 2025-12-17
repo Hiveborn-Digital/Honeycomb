@@ -16,7 +16,7 @@ namespace HoneycombEngine
         {
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
-            foreach (var scene in LoadedScenes)
+            foreach (var scene in LoadedScenes.ToArray())
             {
                 if (scene is Scene2D s2d)
                 {
@@ -25,15 +25,21 @@ namespace HoneycombEngine
                         obj.InternalUpdate();
                     }
                 }
+                if (scene is Scene3D s3d)
+                {
+                    foreach (var obj in s3d.objects.generic3D.ToArray())
+                    {
+                        obj.InternalUpdate();
+                    }
+                }
             }
-
         }
 
         public static void Draw()
         {
-            HoneycombCore._spriteBatch.Begin();
-            foreach (var scene in LoadedScenes)
+            foreach (var scene in LoadedScenes.ToArray())
             {
+                HoneycombCore._spriteBatch.Begin();
                 if (scene is Scene2D s2d)
                 {
                     foreach (var obj in s2d.objects.generic2D.ToArray())
@@ -41,8 +47,15 @@ namespace HoneycombEngine
                         obj.InternalDraw();
                     }
                 }
+                if (scene is Scene3D s3d)
+                {
+                    foreach (var obj in s3d.objects.generic3D.ToArray())
+                    {
+                        obj.InternalDraw();
+                    }
+                }
+                HoneycombCore._spriteBatch.End();
             }
-            HoneycombCore._spriteBatch.End();
         }
     }
 }

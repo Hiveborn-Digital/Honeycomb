@@ -11,7 +11,7 @@ namespace HoneycombEngine
     {
         public Honeycomb()
         {
-            new Scene2D("Game2D");
+            new Honeycomb.Scene2D("Game2D");
             Console.WriteLine("Honeycomb Engine Initialised");
         }
     }

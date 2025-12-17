@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HoneycombEngine
 {
@@ -69,24 +72,76 @@ namespace HoneycombEngine
             }
         }
 
-        public class Scene
+
+        [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+        [JsonDerivedType(typeof(Scene2D), "2D")]
+        [JsonDerivedType(typeof(Scene3D), "3D")]
+        public abstract class Scene
         {
             public Map map = null;
             public string sceneID;
-            public Scene(string ID)
+
+            protected Scene() { }
+
+            protected Scene(string ID)
             {
                 Scenes.Add(ID, this);
                 sceneID = ID;
             }
             public int Depth;
-            public void Delete()
+
+            public string GetImage()
             {
-                Scenes.Remove(sceneID);
-                LoadedScenes.Remove(this);
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    IncludeFields = true,
+                    ReferenceHandler = ReferenceHandler.Preserve
+                };
+                return JsonSerializer.Serialize<Scene>(this, options);
+            }
+            public Scene GetImageAsScene()
+            {
+                string image = GetImage();
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    IncludeFields = true,
+                    ReferenceHandler = ReferenceHandler.Preserve
+                };
+
+                return JsonSerializer.Deserialize<Scene>(image, options);
+            }
+            public void LoadImage(Scene image)
+            {
+                bool loaded = LoadedScenes.Contains(this);
+                DiscardScene(this);
+
+                Scenes.Add(image.sceneID, image);
+
+                Console.WriteLine(Scenes[image.sceneID].GetImage());
+
+                LoadScene(image);
+
+                if (image is Scene2D s2d)
+                {
+                    foreach (var obj in s2d.objects.generic2D)
+                        obj.scene = image;
+                    foreach (var obj in s2d.objects.solid2D)
+                        obj.scene = image;
+                }
+                else if (image is Scene3D s3d)
+                {
+                    foreach (var obj in s3d.objects.generic3D)
+                        obj.scene = image;
+                    foreach (var obj in s3d.objects.solid3D)
+                        obj.scene = image;
+                }
             }
         }
         public class Scene2D : Scene
         {
+            public Scene2D() { }
             public Scene2D(string ID) : base(ID) { }
             public Objects objects = new Objects();
             public class Objects
@@ -96,7 +151,6 @@ namespace HoneycombEngine
             }
             public void Update()
             {
-
             }
             public void Draw()
             {
@@ -104,12 +158,19 @@ namespace HoneycombEngine
         }
         public class Scene3D : Scene
         {
+            public Scene3D() { }
             public Scene3D(string ID) : base(ID) { }
             public Objects objects = new Objects();
             public class Objects
             {
                 public List<Generic3D> generic3D = new(); // entity without 3D physics
                 public List<Solid3D> solid3D = new();
+            }
+            public void Update()
+            {
+            }
+            public void Draw()
+            {
             }
         }
     }

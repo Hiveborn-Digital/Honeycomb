@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace HoneycombEngine
 {
@@ -14,9 +15,14 @@ namespace HoneycombEngine
             public Vector2 Position;
             public Vector2 Speed;
 
+            [JsonIgnore]
+            public Scene scene;
+
             public int Depth;
+            public Generic2D() { }
             public Generic2D(string sceneID)
             {
+                scene = Scenes[sceneID];
                 if (Scenes[sceneID] is Scene2D s2d)
                 {
                     switch (this) // pls make sure Generic2D stays at the bottom
@@ -51,8 +57,15 @@ namespace HoneycombEngine
         {
             public Vector3 Position;
             public Vector3 Speed;
+
+            [JsonIgnore]
+            public Scene scene;
+
+            public int Depth;
+            public Generic3D() { }
             public Generic3D(string sceneID)
             {
+                scene = Scenes[sceneID];
                 if (Scenes[sceneID] is Scene3D s3d)
                 {
                     switch (this) // keep Generic3D at the bottom too
