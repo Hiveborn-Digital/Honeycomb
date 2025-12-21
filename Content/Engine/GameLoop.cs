@@ -16,6 +16,8 @@ namespace HoneycombEngine
         {
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
+            Input.Update();
+
             foreach (var scene in LoadedScenes.ToArray())
             {
                 if (scene is Scene2D s2d)
