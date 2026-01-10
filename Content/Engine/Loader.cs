@@ -23,6 +23,32 @@ namespace Honeycomb
                     return null;
                 }
             }
+            public static class LoadContent
+            {
+                private static bool loaded = false;
+
+                public static void DoYourThing(){
+                    if (!loaded)
+                    {
+                        v();
+                        vdlc();
+                        mdlc();
+                        loaded = true;
+                    }
+                }
+                private static void v() // Vanilla game content
+                {
+                    List<string> contents = IO.GetFolderContents(@"Content/v");
+                }
+                private static void vdlc() // Vanilla DLC content
+                {
+                    List<string> contents = IO.GetFolderContents(@"Content/vdlc");
+                }
+                private static void mdlc() // Community-made DLC content (like mods)
+                {
+                    List<string> contents = IO.GetFolderContents(@"Content/mdlc");
+                }
+            }
         }
     }
 }

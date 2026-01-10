@@ -40,6 +40,7 @@ namespace Honeycomb
 
         protected override void LoadContent()
         {
+            Engine.Loader.LoadContent.DoYourThing();
         }
 
         protected override void Update(GameTime gameTime)

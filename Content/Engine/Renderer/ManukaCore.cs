@@ -25,6 +25,7 @@ namespace Manuka
         }
         public class Window
         {
+            public static Vector2 getScale = new Vector2(HoneycombCore._graphics.PreferredBackBufferWidth, HoneycombCore._graphics.PreferredBackBufferHeight);
             public static void SetFramerate(int fps)
             {
                 HoneycombCore.Self.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / fps);
@@ -36,8 +37,9 @@ namespace Manuka
             }
             public static void ChangeScale(Vector2 windowScale)
             {
-                HoneycombCore._graphics.PreferredBackBufferWidth = (int)Math.Floor(windowScale.X);
-                HoneycombCore._graphics.PreferredBackBufferHeight = (int)Math.Floor(windowScale.Y);
+                getScale = new Vector2((int)Math.Floor(windowScale.X), (int)Math.Floor(windowScale.Y));
+                HoneycombCore._graphics.PreferredBackBufferWidth = getScale.X;
+                HoneycombCore._graphics.PreferredBackBufferHeight = getScale.Y;
                 HoneycombCore._graphics.ApplyChanges();
             }
             public static void SetCursorVisibility(bool enabled)
@@ -52,6 +54,11 @@ namespace Manuka
             public static void SetBorderless(bool enabled)
             {
                 HoneycombCore.Self.Window.IsBorderless = enabled;
+                HoneycombCore._graphics.ApplyChanges();
+            }
+            public static void UserScaling(bool enabled)
+            {
+                HoneycombCore.Self.Window.AllowUserResizing = enabled;
                 HoneycombCore._graphics.ApplyChanges();
             }
         }
