@@ -6,9 +6,9 @@ using System.IO;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
-    public partial class Honeycomb
+    public partial class Engine
     {
         public class Generic2D
         {
@@ -16,7 +16,7 @@ namespace HoneycombEngine
             public Vector2 Speed;
 
             [JsonIgnore]
-            public Scene scene;
+            public Engine.Scene scene;
 
             public int Depth;
             public Generic2D() { }

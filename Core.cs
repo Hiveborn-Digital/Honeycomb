@@ -3,8 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using Manuka;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
     public class HoneycombCore : Game
     {
@@ -27,10 +28,12 @@ namespace HoneycombEngine
 
         protected override void Initialize()
         {
-            new Honeycomb();
-            Honeycomb.GraphicsContext.Initialise(GraphicsDevice);
+            new Engine();
+            Console.WriteLine($"[ENGINE] Initialised.");
+            Renderer.GraphicsContext.Initialise(GraphicsDevice);
+            Console.WriteLine($"[RENDERER] Initialised.");
 
-            _spriteBatch = new SpriteBatch(Honeycomb.GraphicsContext.Device);
+            _spriteBatch = new SpriteBatch(Renderer.GraphicsContext.Device);
 
             base.Initialize();
         }
@@ -44,16 +47,16 @@ namespace HoneycombEngine
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Honeycomb.Update(gameTime);
+            Engine.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            Honeycomb.GraphicsContext.Device.Clear(Honeycomb.clearColour);
+            Renderer.GraphicsContext.Device.Clear(Renderer.clearColour);
 
-            Honeycomb.Draw();
+            Engine.Draw();
 
             base.Draw(gameTime);
         }

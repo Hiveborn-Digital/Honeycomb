@@ -6,15 +6,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
-    public partial class Honeycomb
+    public partial class Engine
     {
         public static float deltaTime;
+        public static float runTime = 0;
+        public static float gameSpeed = 1;
 
         public static void Update(GameTime gameTime)
         {
-            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds * 60 * gameSpeed;
+            runTime += deltaTime;
 
             Input.Update();
 

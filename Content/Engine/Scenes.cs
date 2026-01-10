@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
-    public partial class Honeycomb
+    public partial class Engine
     {
         public static Dictionary<string, Scene> Scenes = new();
         public static List<Scene> LoadedScenes = new();

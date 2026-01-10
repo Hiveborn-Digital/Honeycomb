@@ -7,7 +7,7 @@ namespace HoneycombInit
         [STAThread]
         static void Main(string[] args)
         {
-            new HoneycombEngine.HoneycombCore();
+            new Honeycomb.HoneycombCore();
         }
     }
 }

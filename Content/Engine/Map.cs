@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
-    public partial class Honeycomb
+    public partial class Engine
     {
         public class Map
         {

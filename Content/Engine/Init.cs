@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace HoneycombEngine
+namespace Honeycomb
 {
-    public partial class Honeycomb
+    public partial class Engine
     {
-        public Honeycomb()
+        public Engine()
         {
             new Scene2D("Game2D");
             Console.WriteLine("Honeycomb Engine Initialised");
