@@ -24,32 +24,36 @@ namespace Honeycomb
             var logWriter = new StreamWriter(logStream) { AutoFlush = true };
             Console.SetOut(logWriter);
             Console.SetError(logWriter);
+
+            Console.WriteLine("___________________");
+            Console.WriteLine("");
+            Console.WriteLine("Started New Session");
+            Console.WriteLine("___________________");
+            Console.WriteLine("");
         }
 
         protected override void Initialize()
         {
             new Engine();
-            Console.WriteLine($"[ENGINE] Initialised.");
+            Console.WriteLine($"[ENGINE]     {DateTime.Now.ToString()} - Initialised.");
             Renderer.GraphicsContext.Initialise(GraphicsDevice);
-            Console.WriteLine($"[RENDERER] Initialised.");
+            Console.WriteLine($"[RENDERER]   {DateTime.Now.ToString()} - Initialised.");
 
             _spriteBatch = new SpriteBatch(Renderer.GraphicsContext.Device);
+
+            Engine.Loader.LoadContent.DoYourThing();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            Engine.Loader.LoadContent.DoYourThing();
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             Engine.Update(gameTime);
-
             base.Update(gameTime);
         }
 

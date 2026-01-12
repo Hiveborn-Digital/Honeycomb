@@ -12,15 +12,15 @@ namespace Honeycomb
         public class Log
         {
             public static void Info(string log){
-                Console.WriteLine($"[INFO] {log}");
+                Console.WriteLine($"[INFO]       {DateTime.Now.ToString()} - {log}");
             }
 
             public static void Warn(string log){
-                Console.WriteLine($"[WARN] {log}");
+                Console.WriteLine($"[WARN]       {DateTime.Now.ToString()} - {log}");
             }
 
             public static void Err(string log){
-                Console.Error.WriteLine(new InvalidOperationException($"[ERR] {log}"));
+                Console.Error.WriteLine(new InvalidOperationException($"[ERR]        {DateTime.Now.ToString()} - {log}"));
 
             }
         }

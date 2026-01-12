@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Honeycomb
 {
@@ -18,8 +19,9 @@ namespace Honeycomb
                     byte[] data = File.ReadAllBytes(path); // reading the raw bytes keeps the file unlocked so ur OS doesn't shit its pants when you try to modify it
                     return Assembly.Load(data);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Log.Warn($"Failed to load DLL from \"{path}\": {ex}");
                     return null;
                 }
             }
@@ -39,6 +41,32 @@ namespace Honeycomb
                 private static void v() // Vanilla game content
                 {
                     List<string> contents = IO.GetFolderContents(@"Content/v");
+                    int packageCount = contents.Count;
+
+                    Log.Info($"Loading {packageCount} packages in {Path.GetFullPath(@"Content/v")}");
+
+                    int idx = 0;
+                    foreach (var item in contents)
+                    {
+                        idx += 1;
+                        if (Directory.Exists(item))
+                        {
+                            string config_file = Path.Combine(item, "_package.json");
+                            if (File.Exists(config_file))
+                            {
+                                string data = File.ReadAllText(config_file);
+                                using JsonDocument doc = JsonDocument.Parse(data);
+                                JsonElement config = doc.RootElement;
+
+                                Log.Info($"Loading vanilla package: {config.GetProperty("name").GetString()}, \"{item}\" ({idx} / {packageCount})");
+
+                                LoadDLL(Path.Combine(item, config.GetProperty("DLL_path").GetString()));
+                            }
+                        } else
+                        {
+                            Log.Warn($"Not a package: \"{item}\" ({idx} / {packageCount})");
+                        }
+                    }
                 }
                 private static void vdlc() // Vanilla DLC content
                 {

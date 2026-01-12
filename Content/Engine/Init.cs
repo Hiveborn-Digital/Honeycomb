@@ -12,7 +12,7 @@ namespace Honeycomb
         public Engine()
         {
             new Scene2D("Game2D");
-            Console.WriteLine("Honeycomb Engine Initialised");
+            Log.Info("Loaded default scene \"Game2D\"");
         }
     }
 }

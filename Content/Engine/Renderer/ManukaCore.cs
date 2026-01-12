@@ -12,6 +12,9 @@ namespace Manuka
 {
     public partial class Renderer
     {
+        private static void RenderLog(string log){
+            Console.WriteLine($"[RENDERER]   {DateTime.Now.ToString()} - {log}");
+        }
         public static Color clearColour = Color.Black;
 
         public static class GraphicsContext
@@ -29,36 +32,49 @@ namespace Manuka
             public static void SetFramerate(int fps)
             {
                 HoneycombCore.Self.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / fps);
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"Target framerate set to {fps}");
             }
             public static void VSync(bool enabled)
             {
                 HoneycombCore._graphics.SynchronizeWithVerticalRetrace = enabled;
                 HoneycombCore._graphics.ApplyChanges();
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"VSync set to {enabled}");
             }
             public static void ChangeScale(Vector2 windowScale)
             {
                 getScale = new Vector2((int)Math.Floor(windowScale.X), (int)Math.Floor(windowScale.Y));
-                HoneycombCore._graphics.PreferredBackBufferWidth = getScale.X;
-                HoneycombCore._graphics.PreferredBackBufferHeight = getScale.Y;
+                HoneycombCore._graphics.PreferredBackBufferWidth = (int)getScale.X;
+                HoneycombCore._graphics.PreferredBackBufferHeight = (int)getScale.Y;
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"Window scale set to {windowScale}");
                 HoneycombCore._graphics.ApplyChanges();
             }
             public static void SetCursorVisibility(bool enabled)
             {
                 HoneycombCore.Self.IsMouseVisible = enabled;
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"Cursor visibility set to {enabled}");
             }
             public static void SetFullscreen(bool enabled)
             {
                 HoneycombCore._graphics.IsFullScreen = enabled;
+                Engine.IO.SaveWindowPreferences();
                 HoneycombCore._graphics.ApplyChanges();
             }
             public static void SetBorderless(bool enabled)
             {
                 HoneycombCore.Self.Window.IsBorderless = enabled;
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"Borderless set to {enabled}");
                 HoneycombCore._graphics.ApplyChanges();
             }
             public static void UserScaling(bool enabled)
             {
                 HoneycombCore.Self.Window.AllowUserResizing = enabled;
+                Engine.IO.SaveWindowPreferences();
+                RenderLog($"Userscaling set to {enabled}");
                 HoneycombCore._graphics.ApplyChanges();
             }
         }
