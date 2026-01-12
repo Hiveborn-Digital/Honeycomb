@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -60,7 +58,11 @@ namespace Honeycomb
 
                                 Log.Info($"Loading vanilla package: {config.GetProperty("name").GetString()}, \"{item}\" ({idx} / {packageCount})");
 
-                                LoadDLL(Path.Combine(item, config.GetProperty("DLL_path").GetString()));
+                                var asm = LoadDLL(Path.Combine(item, config.GetProperty("DLL_path").GetString()));
+                                PackageManager.LoadPackagesFromAssembly(asm);
+                            } else
+                            {
+                                Log.Warn($"Not a package: \"{item}\" ({idx} / {packageCount})");
                             }
                         } else
                         {
