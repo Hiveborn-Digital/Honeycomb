@@ -12,8 +12,14 @@ namespace Manuka
 {
     public partial class Renderer
     {
+        public static Texture2D _pixel { get; private set; }
         private static void RenderLog(string log){
             Console.WriteLine($"[RENDERER]   {DateTime.Now.ToString()} - {log}");
+        }
+        public Renderer()
+        {
+            _pixel = new Texture2D(GraphicsContext.Device, 1, 1);
+            _pixel.SetData(new[] { Color.White });
         }
         public static Color clearColour = Color.Black;
 

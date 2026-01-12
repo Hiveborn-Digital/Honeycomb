@@ -37,6 +37,7 @@ namespace Honeycomb
             new Engine();
             Console.WriteLine($"[ENGINE]     {DateTime.Now.ToString()} - Initialised.");
             Renderer.GraphicsContext.Initialise(GraphicsDevice);
+            new Renderer();
             Console.WriteLine($"[RENDERER]   {DateTime.Now.ToString()} - Initialised.");
 
             _spriteBatch = new SpriteBatch(Renderer.GraphicsContext.Device);
