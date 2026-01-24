@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Honeycomb
 {
@@ -67,10 +65,6 @@ namespace Honeycomb
             }
         }
 
-
-        [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-        [JsonDerivedType(typeof(Scene2D), "2D")]
-        [JsonDerivedType(typeof(Scene3D), "3D")]
         public abstract class Scene
         {
             public Map map = null;
@@ -85,54 +79,23 @@ namespace Honeycomb
             }
             public int Depth;
 
-            public string GetImage()
+            public Scene Clone(string ID)
             {
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    IncludeFields = true,
-                    ReferenceHandler = ReferenceHandler.Preserve
-                };
-                return JsonSerializer.Serialize<Scene>(this, options);
+                var clone = (Scene)MemberwiseClone();
+
+                clone.CloneObjects();
+                Scenes.Add(ID, this);
+                clone.sceneID = ID;
+
+                return clone;
             }
-            public Scene GetImageAsScene()
+            public void ChangeSceneID(string ID)
             {
-                string image = GetImage();
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    IncludeFields = true,
-                    ReferenceHandler = ReferenceHandler.Preserve
-                };
-
-                return JsonSerializer.Deserialize<Scene>(image, options);
+                Scenes.Remove(sceneID);
+                sceneID = ID;
+                Scenes.Add(ID, this);
             }
-            public void LoadImage(Scene image)
-            {
-                bool loaded = LoadedScenes.Contains(this);
-                DiscardScene(this);
-
-                Scenes.Add(image.sceneID, image);
-
-                Console.WriteLine(Scenes[image.sceneID].GetImage());
-
-                LoadScene(image);
-
-                if (image is Scene2D s2d)
-                {
-                    foreach (var obj in s2d.objects.generic2D)
-                        obj.scene = image;
-                    foreach (var obj in s2d.objects.solid2D)
-                        obj.scene = image;
-                }
-                else if (image is Scene3D s3d)
-                {
-                    foreach (var obj in s3d.objects.generic3D)
-                        obj.scene = image;
-                    foreach (var obj in s3d.objects.solid3D)
-                        obj.scene = image;
-                }
-            }
+            protected abstract void CloneObjects();
         }
         public class Scene2D : Scene
         {
@@ -150,6 +113,29 @@ namespace Honeycomb
             public void Draw()
             {
             }
+
+            protected override void CloneObjects()
+            {
+                var newObjects = new Objects();
+
+                foreach (var obj in objects.generic2D)
+                {
+                    var objClone = obj.Clone();
+                    objClone.scene = this;
+                    newObjects.generic2D.Add(objClone);
+                }
+
+                foreach (var obj in objects.solid2D)
+                {
+                    var objClone = obj.Clone();
+                    objClone.scene = this;
+                    newObjects.solid2D.Add(objClone);
+                }
+
+                objects = newObjects;
+            }
+
+
         }
         public class Scene3D : Scene
         {
@@ -166,6 +152,27 @@ namespace Honeycomb
             }
             public void Draw()
             {
+            }
+
+            protected override void CloneObjects()
+            {
+                var newObjects = new Objects();
+
+                foreach (var obj in objects.generic3D)
+                {
+                    var objClone = obj.Clone();
+                    objClone.scene = this;
+                    newObjects.generic3D.Add(objClone);
+                }
+
+                foreach (var obj in objects.solid3D)
+                {
+                    var objClone = obj.Clone();
+                    objClone.scene = this;
+                    newObjects.solid3D.Add(objClone);
+                }
+
+                objects = newObjects;
             }
         }
     }

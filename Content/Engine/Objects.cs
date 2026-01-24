@@ -5,13 +5,20 @@ namespace Honeycomb
 {
     public partial class Engine
     {
+        public class Collider2D
+        {
+            public Vector2 Scale;
+            public Collider2D(Vector2 relative_position, Vector2 scale)
+            {
+                
+            }
+        }
         public class Generic2D
         {
             public Vector2 Position;
             public Vector2 Speed;
 
-            [JsonIgnore]
-            public Engine.Scene scene;
+            public Scene scene;
 
             public int Depth;
             public Generic2D() { }
@@ -40,12 +47,24 @@ namespace Honeycomb
             {
                 Draw();
             }
+            public virtual Generic2D Clone()
+            {
+                var clone = (Generic2D)this.MemberwiseClone();
+                return clone;
+            }
             protected virtual void Update() { }
             protected virtual void Draw() { }
+
         }
         public class Solid2D : Generic2D
         {
             public Solid2D(string sceneID) : base(sceneID) { }
+
+            public override Solid2D Clone()
+            {
+                var clone = (Solid2D)this.MemberwiseClone();
+                return clone;
+            }
         }
 
         public class Generic3D
@@ -53,7 +72,6 @@ namespace Honeycomb
             public Vector3 Position;
             public Vector3 Speed;
 
-            [JsonIgnore]
             public Scene scene;
 
             public int Depth;
@@ -85,10 +103,22 @@ namespace Honeycomb
             }
             protected virtual void Update() { }
             protected virtual void Draw() { }
+
+            public virtual Generic3D Clone()
+            {
+                var clone = (Generic3D)this.MemberwiseClone();
+                return clone;
+            }
         }
         public class Solid3D : Generic3D
         {
             public Solid3D(string sceneID) : base(sceneID) { }
+
+            public override Solid3D Clone()
+            {
+                var clone = (Solid3D)this.MemberwiseClone();
+                return clone;
+            }
         }
     }
 }
